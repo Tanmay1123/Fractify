@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fractify · Fractional Ownership Demo</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M15 5a11 11 0 1 0 11 11H15z' fill='%236C22F2'/%3E%3Cpath d='M18 2a11 11 0 0 1 11 11H18z' fill='%23A98BFF'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="#" data-action="nav" data-view="market">
+      <svg viewBox="0 0 32 32" class="brand-mark"><path d="M15 5a11 11 0 1 0 11 11H15z" fill="#6C22F2"/><path d="M18 2a11 11 0 0 1 11 11H18z" fill="#A98BFF"/></svg>
+      <span>Fractify</span>
+    </a>
+    <nav class="nav" id="nav"></nav>
+    <div class="acting" id="acting"></div>
+  </div>
+</header>
+<main id="main"></main>
+<div class="modal-layer" id="modal" hidden></div>
+<div class="toasts" id="toasts"></div>
+<script src="app.js"></script>
+</body>
+</html>
