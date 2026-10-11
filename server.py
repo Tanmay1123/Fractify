@@ -19,7 +19,7 @@ STATE_FILE = ROOT / "data" / "state.json"
 platform = None
 BAD_SAVE = "The demo data saved in this browser could not be read. Click reset (top right) to start again."
 
-mimetypes.add_type("font/woff", ".woff")
+mimetypes.add_type("font/woff2", ".woff2")
 mimetypes.add_type("application/javascript", ".js")
 mimetypes.add_type("text/css", ".css")
 mimetypes.add_type("image/svg+xml", ".svg")

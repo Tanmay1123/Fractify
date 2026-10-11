@@ -3,10 +3,10 @@ from datetime import datetime
 from engine import IST, OTHERS, SPV
 
 GROUP = [
-    ("atharva", "Atharva Dandgavhan", "#6C22F2"),
-    ("harris", "Harris Khan", "#F5A524"),
-    ("tanmay", "Tanmay Tailor", "#16B37E"),
-    ("harsh", "Harshwardhan Sharma", "#1E1446"),
+    ("atharva", "Atharva Dandgavhan", "#0B1F47"),
+    ("harris", "Harris Khan", "#B8892B"),
+    ("tanmay", "Tanmay Tailor", "#E3CB8F"),
+    ("harsh", "Harshwardhan Sharma", "#5B6B8F"),
 ]
 
 STARTING_WALLET = 10_00_000
@@ -39,8 +39,8 @@ def build_seed(p):
     p.blank()
     p._clock = at((6, 1), 9)
     p._block("GENESIS", memo="Fractify ledger started")
-    p.add_investor(SPV, "Asset SPV", "#E4DCFB", 0, kind="system")
-    p.add_investor(OTHERS, "Other investors", "#B9B3D3", 0, kind="crowd")
+    p.add_investor(SPV, "Asset SPV", "#FFFFFF", 0, kind="system")
+    p.add_investor(OTHERS, "Other investors", "#D9D5C8", 0, kind="crowd")
     for iid, name, color in GROUP:
         p.add_investor(iid, name, color, STARTING_WALLET)
 

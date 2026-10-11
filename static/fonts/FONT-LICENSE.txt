@@ -1,2 +1,2 @@
-Poppins by Indian Type Foundry, licensed under the SIL Open Font License 1.1 (https://openfontlicense.org).
-Bundled here as WOFF so the demo looks right offline.
+Inter by Rasmus Andersson (rsms.me/inter), licensed under the SIL Open Font License 1.1 (https://openfontlicense.org).
+Bundled here as a variable WOFF2 so the demo looks right offline.

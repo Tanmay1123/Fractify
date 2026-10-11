@@ -35,10 +35,10 @@ seed data; the ↻ button resets it. To rehearse that mode offline: `python serv
 ## 75-second demo path
 
 1. **Marketplace** → open **Sea-View Holiday Villa**. Point at the 10×10 grid: each square is 1% of the villa.
-2. Acting as **Atharva** (top-right avatars), click **50** → **Buy 50 fractions**. Five squares turn purple: 5% for ₹5,00,000.
+2. Acting as **Atharva** (top-right avatars), click **50** → **Buy 50 fractions**. Five squares turn navy: 5% for ₹5,00,000.
 3. **SPV manager** tab → **Distribute** (₹60,000 rent). The table on the left shows every owner paid ₹60 per fraction.
 4. Click **+5% value**. Every fraction is now worth ₹10,500, so Atharva's stake gained ₹25,000.
-5. Switch to **Tanmay** (green avatar) → in **Secondary market**, buy Harris's 10 listed fractions. Harris exits with a profit; the villa was never sold.
+5. Switch to **Tanmay** (the **TT** avatar) → in **Secondary market**, buy Harris's 10 listed fractions. Harris exits with a profit; the villa was never sold.
 6. **Ledger** → **Verify chain** (green) → **Tamper with a record** → **Verify chain** again (red, record caught) → **Restore record**.
 
 ## What's inside
@@ -49,7 +49,7 @@ seed data; the ↻ button resets it. To rehearse that mode offline: `python serv
 | `seed.py` | Starting data: the 4 group members (₹10,00,000 wallet each), 4 assets, past purchases and payouts |
 | `server.py` | Tiny HTTP server: serves the UI and a JSON API (`/api/state`, `/api/buy`, `/api/list`, `/api/fill`, `/api/cancel`, `/api/distribute`, `/api/revalue`, `/api/verify`, `/api/tamper`, `/api/restore`, `/api/reset`) |
 | `api/index.py`, `vercel.json` | Vercel deployment: runs the same server code without a state file |
-| `static/` | The web interface (`index.html`, `styles.css`, `app.js`, bundled Poppins font) |
+| `static/` | The web interface (`index.html`, `styles.css`, `app.js`, bundled Inter font) |
 | `test_engine.py` | Unit tests: `python test_engine.py` |
 | `data/state.json` | Created at runtime; delete it (or use `--reset`) to start over |
 

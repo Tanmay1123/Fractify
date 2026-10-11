@@ -29,7 +29,10 @@ Working model of fractional ownership for a college FinTech presentation. Keep i
 - Open files with `encoding="utf-8"`; keep console `print` output ASCII (Windows consoles).
 - Group member names and colours live in `seed.GROUP`. Tanmay's surname is spelled "Tailor".
 
-## Design tokens (from the purple fintech reference)
-Primary `#6C22F2`, light `#A98BFF` / `#EEE7FF` / `#F7F4FF`, navy `#1C1543`, ink `#16122E`, green `#16B37E`,
-amber `#F5A524`. Font Poppins (bundled in `static/fonts`). Pill buttons, 16–28px radii, soft purple shadows,
-purple full-width stat band, navy feature panels, numbered steps with dashed connectors.
+## Design tokens (matches the group's "Fractional Ownership - Owning a Slice" deck)
+Navy `#0B1F47` (panels, primary buttons), gold `#D4AE57` (accents on navy), darker gold `#B8892B` / `#94701F` (numbers and
+small caps on light), light gold `#E3CB8F` / `#F3E7C8`, cream `#F7EFE0`, paper background `#FAF8F2`, slate `#5B6B8F`,
+green `#17996B` and red `#D64545` only for gain / valid and loss / tampered. Font Inter (variable, bundled in `static/fonts`),
+weight 800 headings with tight tracking. Deck motifs: gold small-caps eyebrows with a short gold rule, big gold stat numbers
+split by thin gold dividers, navy panels with a large ring in the corner, navy / gold numbered circles joined by dashed gold
+lines, cream and gold cards with navy icon circles, pill buttons. Investor colours follow the deck's ownership legend.

@@ -27,10 +27,9 @@ const ICONS = {
   door: '<path d="M18 20V6a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v14"/><path d="M2 20h20"/><path d="M14 12v.01"/>',
 };
 const ic = (n, cls = "") => `<svg class="ico ${cls}" viewBox="0 0 24 24">${ICONS[n] || ""}</svg>`;
-const LOGO_W = '<svg viewBox="0 0 32 32" width="22" height="22"><path d="M15 5a11 11 0 1 0 11 11H15z" fill="#fff"/><path d="M18 2a11 11 0 0 1 11 11H18z" fill="#fff" opacity=".6"/></svg>';
 
 const GROUP_IDS = ["atharva", "harris", "tanmay", "harsh"];
-const SPV_FILL = "#F1ECFF";
+const SPV_FILL = "#FFFFFF", SPV_EDGE = "#D9C89A";
 const S = {
   data: null, view: "market", me: "atharva", asset: null, tab: "buy",
   buy: 10, sellUnits: 5, sellPrice: null, dist: null, verify: null, flash: new Set(),
@@ -55,7 +54,9 @@ const fmtPct = (x) => `${x.toFixed(2)}%`;
 const inv = (id) => S.data.investors.find((i) => i.id === id);
 const assetById = (id) => S.data.assets.find((a) => a.id === id);
 const me = () => inv(S.me);
-const avatar = (i, cls = "") => `<span class="av ${cls}" style="background:${i.color}" title="${esc(i.name)}">${esc(i.initials)}</span>`;
+// white initials on dark avatars, navy on the light-gold ones
+const onColor = (hex) => { const n = parseInt(hex.slice(1), 16); return 0.299 * (n >> 16) + 0.587 * ((n >> 8) & 255) + 0.114 * (n & 255) > 165 ? "#0B1F47" : "#fff"; };
+const avatar = (i, cls = "") => `<span class="av ${cls}" style="background:${i.color};color:${onColor(i.color)}" title="${esc(i.name)}">${esc(i.initials)}</span>`;
 const fmtTime = (ts) => new Date(ts).toLocaleString("en-IN", { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" });
 const unitsOf = (a, id) => (a.holders.find((h) => h.id === id) || { units: 0 }).units;
 
@@ -81,60 +82,60 @@ async function api(path, body) {
 let artSeq = 0;
 function art(kind) {
   const id = `ag${++artSeq}`;
-  let s = `<defs><linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9257FF"/><stop offset="1" stop-color="#4A0FB8"/></linearGradient></defs>
-  <rect width="400" height="220" fill="url(#${id})"/><circle cx="360" cy="20" r="110" fill="#fff" opacity=".07"/><circle cx="30" cy="220" r="80" fill="#fff" opacity=".06"/>`;
+  let s = `<defs><linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1F3A78"/><stop offset="1" stop-color="#0A1B3F"/></linearGradient></defs>
+  <rect width="400" height="220" fill="url(#${id})"/><circle cx="350" cy="10" r="130" fill="none" stroke="#fff" stroke-width="34" opacity=".06"/><circle cx="30" cy="220" r="80" fill="#D4AE57" opacity=".1"/>`;
   if (kind === "office") {
     s += `<rect x="0" y="198" width="400" height="22" fill="#fff" opacity=".14"/>
     <rect x="48" y="106" width="68" height="94" rx="5" fill="#fff" opacity=".35"/>
     <rect x="170" y="16" width="5" height="22" fill="#fff"/>
     <rect x="128" y="34" width="92" height="166" rx="7" fill="#fff"/>
-    <rect x="232" y="80" width="78" height="120" rx="7" fill="#E9E0FF"/>
+    <rect x="232" y="80" width="78" height="120" rx="7" fill="#F3E7C8"/>
     <rect x="322" y="128" width="44" height="72" rx="5" fill="#fff" opacity=".3"/>`;
-    for (let r = 0; r < 9; r++) for (let c = 0; c < 4; c++) s += `<rect x="${140 + c * 19}" y="${48 + r * 16}" width="12" height="9" rx="2" fill="${(r * 3 + c) % 5 === 0 ? "#6C22F2" : "#CDBBFF"}"/>`;
-    for (let r = 0; r < 6; r++) for (let c = 0; c < 3; c++) s += `<rect x="${244 + c * 21}" y="${94 + r * 17}" width="13" height="9" rx="2" fill="#A98BFF" opacity=".75"/>`;
+    for (let r = 0; r < 9; r++) for (let c = 0; c < 4; c++) s += `<rect x="${140 + c * 19}" y="${48 + r * 16}" width="12" height="9" rx="2" fill="${(r * 3 + c) % 5 === 0 ? "#D4AE57" : "#C9D2E6"}"/>`;
+    for (let r = 0; r < 6; r++) for (let c = 0; c < 3; c++) s += `<rect x="${244 + c * 21}" y="${94 + r * 17}" width="13" height="9" rx="2" fill="#B8892B" opacity=".75"/>`;
   } else if (kind === "villa") {
-    s += `<circle cx="320" cy="58" r="24" fill="#F5C46B"/>
+    s += `<circle cx="320" cy="58" r="24" fill="#E9C46A"/>
     <path d="M330 196 C 326 166 334 134 342 112" stroke="#fff" stroke-width="7" fill="none" stroke-linecap="round"/>
     <path d="M342 112 q -30 -14 -50 4 M342 112 q 28 -18 48 0 M342 112 q -10 -30 -34 -36 M342 112 q 14 -30 38 -32" stroke="#fff" stroke-width="7" fill="none" stroke-linecap="round" opacity=".9"/>
-    <polygon points="94,112 192,54 290,112" fill="#E9E0FF"/>
+    <polygon points="94,112 192,54 290,112" fill="#D4AE57"/>
     <rect x="108" y="108" width="168" height="82" rx="5" fill="#fff"/>
-    <rect x="126" y="126" width="38" height="26" rx="4" fill="#CDBBFF"/>
-    <rect x="222" y="126" width="38" height="26" rx="4" fill="#CDBBFF"/>
-    <rect x="179" y="140" width="28" height="50" rx="4" fill="#6C22F2"/>
-    <rect x="30" y="192" width="340" height="18" rx="9" fill="#C8B4FF" opacity=".7"/>
+    <rect x="126" y="126" width="38" height="26" rx="4" fill="#14295A"/>
+    <rect x="222" y="126" width="38" height="26" rx="4" fill="#14295A"/>
+    <rect x="179" y="140" width="28" height="50" rx="4" fill="#D4AE57"/>
+    <rect x="30" y="192" width="340" height="18" rx="9" fill="#5B6B8F" opacity=".7"/>
     <path d="M50 201 q 10 -6 20 0 t 20 0 t 20 0 M210 201 q 10 -6 20 0 t 20 0 t 20 0" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round"/>`;
   } else if (kind === "solar") {
-    s += `<circle cx="80" cy="58" r="24" fill="#F5C46B"/>`;
+    s += `<circle cx="80" cy="58" r="24" fill="#E9C46A"/>`;
     for (let k = 0; k < 8; k++) {
       const ang = (k * Math.PI) / 4, x1 = 80 + Math.cos(ang) * 32, y1 = 58 + Math.sin(ang) * 32, x2 = 80 + Math.cos(ang) * 42, y2 = 58 + Math.sin(ang) * 42;
-      s += `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="#F5C46B" stroke-width="4" stroke-linecap="round"/>`;
+      s += `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="#E9C46A" stroke-width="4" stroke-linecap="round"/>`;
     }
     const panel = (x, y) => {
-      let p = `<line x1="${x + 30}" y1="${y + 44}" x2="${x + 30}" y2="${y + 58}" stroke="#E9E0FF" stroke-width="3"/><line x1="${x + 70}" y1="${y + 44}" x2="${x + 70}" y2="${y + 58}" stroke="#E9E0FF" stroke-width="3"/>`;
+      let p = `<line x1="${x + 30}" y1="${y + 44}" x2="${x + 30}" y2="${y + 58}" stroke="#F3E7C8" stroke-width="3"/><line x1="${x + 70}" y1="${y + 44}" x2="${x + 70}" y2="${y + 58}" stroke="#F3E7C8" stroke-width="3"/>`;
       p += `<polygon points="${x},${y} ${x + 82},${y} ${x + 100},${y + 44} ${x + 18},${y + 44}" fill="#fff"/>`;
-      for (const f of [1 / 3, 2 / 3]) p += `<line x1="${x + 82 * f}" y1="${y}" x2="${x + 18 + 82 * f}" y2="${y + 44}" stroke="#CDBBFF" stroke-width="2"/>`;
-      p += `<line x1="${x + 9}" y1="${y + 22}" x2="${x + 91}" y2="${y + 22}" stroke="#CDBBFF" stroke-width="2"/>`;
+      for (const f of [1 / 3, 2 / 3]) p += `<line x1="${x + 82 * f}" y1="${y}" x2="${x + 18 + 82 * f}" y2="${y + 44}" stroke="#E3CB8F" stroke-width="2"/>`;
+      p += `<line x1="${x + 9}" y1="${y + 22}" x2="${x + 91}" y2="${y + 22}" stroke="#E3CB8F" stroke-width="2"/>`;
       return p;
     };
     s += panel(150, 70) + panel(262, 70) + panel(90, 140) + panel(202, 140);
     s += `<rect x="0" y="204" width="400" height="16" fill="#fff" opacity=".14"/>`;
   } else {
-    s += `<line x1="200" y1="150" x2="156" y2="210" stroke="#E9E0FF" stroke-width="6" stroke-linecap="round"/>
-    <line x1="200" y1="150" x2="244" y2="210" stroke="#E9E0FF" stroke-width="6" stroke-linecap="round"/>
-    <line x1="200" y1="150" x2="200" y2="214" stroke="#E9E0FF" stroke-width="6" stroke-linecap="round"/>
+    s += `<line x1="200" y1="150" x2="156" y2="210" stroke="#F3E7C8" stroke-width="6" stroke-linecap="round"/>
+    <line x1="200" y1="150" x2="244" y2="210" stroke="#F3E7C8" stroke-width="6" stroke-linecap="round"/>
+    <line x1="200" y1="150" x2="200" y2="214" stroke="#F3E7C8" stroke-width="6" stroke-linecap="round"/>
     <rect x="114" y="30" width="172" height="126" rx="8" fill="#fff"/>
-    <rect x="128" y="44" width="144" height="98" rx="4" fill="#2A1C6B"/>
-    <path d="M128 112 C 156 92, 178 132, 206 108 S 250 94, 272 110" stroke="#F5C46B" stroke-width="5" fill="none"/>
-    <path d="M128 128 C 160 112, 182 144, 212 124 S 252 116, 272 126" stroke="#A98BFF" stroke-width="5" fill="none"/>
-    <path d="M128 96 C 152 82, 176 108, 204 92 S 248 80, 272 92" stroke="#5BE3B0" stroke-width="4" fill="none" opacity=".85"/>
+    <rect x="128" y="44" width="144" height="98" rx="4" fill="#0B1F47"/>
+    <path d="M128 112 C 156 92, 178 132, 206 108 S 250 94, 272 110" stroke="#E9C46A" stroke-width="5" fill="none"/>
+    <path d="M128 128 C 160 112, 182 144, 212 124 S 252 116, 272 126" stroke="#F3E7C8" stroke-width="5" fill="none"/>
+    <path d="M128 96 C 152 82, 176 108, 204 92 S 248 80, 272 92" stroke="#FFFFFF" stroke-width="4" fill="none" opacity=".85"/>
     <path d="M150 54 v10 M176 60 v10 M204 52 v10 M232 58 v10 M256 52 v10" stroke="#fff" stroke-width="2" stroke-linecap="round" opacity=".6"/>`;
   }
   return `<svg viewBox="0 0 400 220" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${s}</svg>`;
 }
 
-function ring(p, color = "#6C22F2") {
+function ring(p, color = "#0B1F47") {
   const c = 2 * Math.PI * 16, d = (Math.max(p, 1) / 100) * c;
-  return `<svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="16" fill="none" stroke="#EEE7FF" stroke-width="6"/><circle cx="20" cy="20" r="16" fill="none" stroke="${color}" stroke-width="6" stroke-dasharray="${d.toFixed(2)} ${c.toFixed(2)}" stroke-linecap="round"/></svg>`;
+  return `<svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="16" fill="none" stroke="#F3E7C8" stroke-width="6"/><circle cx="20" cy="20" r="16" fill="none" stroke="${color}" stroke-width="6" stroke-dasharray="${d.toFixed(2)} ${c.toFixed(2)}" stroke-linecap="round"/></svg>`;
 }
 
 function renderHeader() {
@@ -142,27 +143,49 @@ function renderHeader() {
   $("nav").innerHTML = views.map(([v, i, l]) => `<button class="${S.view === v ? "on" : ""}" data-action="nav" data-view="${v}">${ic(i)}<span>${l}</span></button>`).join("");
   const m = me();
   $("acting").innerHTML = `<div class="acting-label">Acting as<b>${esc(m.short)}</b></div>
-    <div class="avatars">${GROUP_IDS.map((id) => { const i = inv(id); return `<button class="av ${id === S.me ? "on" : ""}" style="background:${i.color}" data-action="me" data-id="${id}" title="Act as ${esc(i.name)}">${esc(i.initials)}</button>`; }).join("")}</div>
+    <div class="avatars">${GROUP_IDS.map((id) => { const i = inv(id); return `<button class="av ${id === S.me ? "on" : ""}" style="background:${i.color};color:${onColor(i.color)}" data-action="me" data-id="${id}" title="Act as ${esc(i.name)}">${esc(i.initials)}</button>`; }).join("")}</div>
     <div class="wallet" title="Wallet balance">${ic("wallet")}<span class="num">${inr(m.cash)}</span></div>
     <button class="icon-btn" data-action="reset" title="Reset demo data">${ic("refresh")}</button>`;
+}
+
+function pieArt() {
+  const cx = 250, cy = 236, rx = 204, ry = 106, d = 56, up = 98;
+  const pt = (deg, dy = 0) => { const r = (deg * Math.PI) / 180; return `${(cx + rx * Math.cos(r)).toFixed(1)},${(cy + ry * Math.sin(r) + dy).toFixed(1)}`; };
+  const wedge = (s, e, dy = 0) => `M${cx},${cy + dy} L${pt(s, dy)} A${rx},${ry} 0 0 1 ${pt(e, dy)} Z`;
+  const face = (deg, dy = 0) => `M${cx},${cy + dy} L${pt(deg, dy)} L${pt(deg, dy + d)} L${cx},${cy + dy + d} Z`;
+  const cuts = [22.5, 67.5, 112.5, 157.5];
+  let s = `<defs>
+    <linearGradient id="pieTop" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1F3A78"/><stop offset="1" stop-color="#0B1F47"/></linearGradient>
+    <linearGradient id="pieWall" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#0A1B3F"/><stop offset=".45" stop-color="#14295A"/><stop offset="1" stop-color="#071432"/></linearGradient>
+    <linearGradient id="goldTop" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F6E2A6"/><stop offset="1" stop-color="#D4AE57"/></linearGradient>
+    <linearGradient id="goldSide" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#C39A3E"/><stop offset="1" stop-color="#94701F"/></linearGradient>
+    <radialGradient id="pieGlow"><stop offset="0" stop-color="#F6E2A6" stop-opacity=".95"/><stop offset="1" stop-color="#F6E2A6" stop-opacity="0"/></radialGradient>
+    <filter id="pieBlur" x="-30%" y="-80%" width="160%" height="260%"><feGaussianBlur stdDeviation="16"/></filter></defs>
+  <ellipse cx="${cx}" cy="${cy + d + 26}" rx="${rx - 6}" ry="${ry - 26}" fill="#0B1F47" opacity=".3" filter="url(#pieBlur)"/>
+  <ellipse cx="${cx}" cy="${cy + d + 8}" rx="${rx + 34}" ry="${ry + 20}" fill="#fff"/>
+  <path d="${wedge(-67.5, -22.5, d)}" fill="#F3E7C8"/>
+  <ellipse cx="${cx + 70}" cy="${cy - 20}" rx="96" ry="52" fill="url(#pieGlow)"/>
+  <path d="${face(-67.5)}" fill="#071432"/>
+  <path d="M${pt(0)} A${rx},${ry} 0 0 1 ${pt(180)} L${pt(180, d)} A${rx},${ry} 0 0 0 ${pt(0, d)} Z" fill="url(#pieWall)"/>
+  <path d="M${pt(0, d - 13)} A${rx},${ry} 0 0 1 ${pt(180, d - 13)}" fill="none" stroke="#D4AE57" stroke-width="4"/>
+  ${cuts.map((c) => `<path d="M${pt(c)} L${pt(c, d)}" stroke="#D4AE57" stroke-width="1.6" opacity=".85"/>`).join("")}`;
+  for (let i = 0; i < 7; i++) s += `<path d="${wedge(-22.5 + i * 45, 22.5 + i * 45)}" fill="url(#pieTop)" stroke="#D4AE57" stroke-width="1.8" stroke-linejoin="round"/>`;
+  s += `<path d="M338,${cy - 14} V${cy - up + d - 8}" stroke="#B8892B" stroke-width="2.5" stroke-dasharray="3 7" stroke-linecap="round"/>
+  <g class="lift"><g transform="translate(0,${-up})">
+    <path d="${face(-22.5)}" fill="url(#goldSide)"/>
+    <path d="${wedge(-67.5, -22.5)}" fill="url(#goldTop)" stroke="#FBF1CF" stroke-width="2" stroke-linejoin="round"/>
+  </g></g>`;
+  return `<svg class="pie" viewBox="0 0 500 440" aria-hidden="true">${s}</svg>`;
 }
 
 function heroVisual() {
   const villa = assetById("villa");
   const mine = unitsOf(villa, S.me);
   const f2 = mine > 0 ? `${esc(me().short)} owns<b>${fmtPct((mine * 100) / villa.total_units)} of the villa</b>` : `1 villa fraction<b>= 0.10% ownership</b>`;
-  return `
-  <div class="token b"><div class="token-top"><div class="token-brand">${LOGO_W} FRACTIFY</div><div class="chip"></div></div>
-    <div class="token-num">0217 / 2000</div>
-    <div class="token-foot"><div>Asset<b>Solar Park · Nashik</b></div><div>Stake<b>0.05%</b></div></div></div>
-  <div class="token a"><div class="token-top"><div class="token-brand">${LOGO_W} FRACTIFY</div><div class="chip"></div></div>
-    <div class="token-num">0042 / 1000</div>
-    <div class="token-foot"><div>Asset<b>Sea-View Villa · Goa</b></div><div>Stake<b>0.10%</b></div></div></div>
-  <div class="float f1"><span class="dot" style="background:var(--green-50);color:var(--green)">${ic("check")}</span><div>September rent<b>${inr(6000)} per fraction</b></div></div>
-  <div class="float f2"><span class="dot" style="background:var(--p-100);color:var(--p)">${ic("pie")}</span><div>${f2}</div></div>
-  <div class="float f3"><span class="dot" style="background:var(--p);color:#fff">${ic("shield")}</span><div>Ledger<b>${num(S.data.stats.blocks)} hashed records</b></div></div>
-  <div class="sq" style="right:70px;top:24px;background:#fff;color:var(--p)">${ic("lock")}</div>
-  <div class="sq" style="left:24px;top:258px;background:var(--amber);color:#fff">${ic("coins")}</div>`;
+  return `${pieArt()}
+  <div class="float f1"><span class="dot g">${ic("coins")}</span><div>September rent<b>${inr(6000)} per fraction</b></div></div>
+  <div class="float f2"><span class="dot">${ic("pie")}</span><div>${f2}</div></div>
+  <div class="float f3"><span class="dot">${ic("shield")}</span><div>Ledger<b>${num(S.data.stats.blocks)} hashed records</b></div></div>`;
 }
 
 function assetCard(a) {
@@ -186,7 +209,7 @@ function assetCard(a) {
 function cta() {
   return `<div class="wrap cta"><div class="cta-in"><div style="position:relative;z-index:1"><h2>Big assets. Small tickets. Shared returns.</h2>
     <p>Fractify is a working model of fractional ownership, built for our FinTech presentation. Every action runs through a Python backend and is recorded on a hash-linked ledger.</p></div>
-    <div class="credits">${GROUP_IDS.map((id) => { const i = inv(id); return `<div class="credit">${avatar(i, "sm")}${esc(i.name)}</div>`; }).join("")}</div></div></div>`;
+    <div class="credits-wrap"><div class="credits-lbl">Presented by</div><div class="credits">${GROUP_IDS.map((id) => { const i = inv(id); return `<div class="credit">${avatar(i, "sm")}${esc(i.name)}</div>`; }).join("")}</div></div></div></div>`;
 }
 
 function viewMarket() {
@@ -196,6 +219,7 @@ function viewMarket() {
     <div>
       <span class="eyebrow">FinTech demo · Fractional ownership</span>
       <h1>Own a <em>slice</em> of assets you could never buy whole.</h1>
+      <span class="rule"></span>
       <p class="lead">A ₹1 crore villa is out of reach for most people. Split it into 1,000 digital fractions of ₹10,000 and anyone can co-own it, earn their share of the rent and sell their slice whenever they want.</p>
       <div class="hero-cta"><button class="btn btn-p" data-action="scroll" data-to="assets">Explore assets ${ic("arrow")}</button><button class="btn btn-o" data-action="nav" data-view="learn">How it works</button></div>
       <div class="hero-facts"><span>${ic("coins")}From ₹5,000 a fraction</span><span>${ic("pie")}Income shared pro-rata</span><span>${ic("shield")}Tamper-evident ledger</span></div>
@@ -210,7 +234,7 @@ function viewMarket() {
       <div class="stat"><b>${inrShort(st.income_paid)}</b><span>Income distributed</span></div>
       <div class="stat"><b>${num(st.blocks)}</b><span>Ledger records</span></div>
     </div></div></section>
-  <section class="section" id="assets" style="scroll-margin-top:72px"><div class="wrap">
+  <section class="section" id="assets" style="scroll-margin-top:76px"><div class="wrap">
     <div class="sec-head"><h2>Explore our assets</h2><p>Each asset sits in its own SPV (a company that exists only to hold it) and is split into equal fractions. Open one, buy a few fractions and watch the ownership map change.</p></div>
     <div class="grid-assets">${S.data.assets.map(assetCard).join("")}</div>
   </div></section>
@@ -236,13 +260,13 @@ function payout(a) {
   const rows = [...d.rows].sort((x, y) => rank(x.investor) - rank(y.investor) || y.units - x.units);
   return `<div class="payout"><h4>${ic("check")}Just paid: ${esc(d.label)} of ${inr(d.amount)}</h4><p class="sub">${inr(Math.round(d.per_unit))} per fraction · each owner gets fractions × ${inr(Math.round(d.per_unit))}</p>
     <table class="tbl"><tr><th>Owner</th><th class="r">Fractions</th><th class="r">Share</th><th class="r">Paid</th></tr>
-    ${rows.map((r) => { const i = inv(r.investor); const nm = r.investor === "spv" ? "SPV (unsold)" : r.investor === "others" ? "Other investors" : i.short; return `<tr><td><span class="who"><i style="background:${r.investor === "spv" ? "#CDBBFF" : i.color}"></i>${esc(nm)}${r.investor === S.me ? ' <span class="you" style="font-size:10px;font-weight:700;color:#fff;background:var(--p);border-radius:999px;padding:1px 7px">YOU</span>' : ""}</span></td><td class="r num">${num(r.units)}</td><td class="r num">${fmtPct((r.units * 100) / a.total_units)}</td><td class="r num"><b>${inr(r.amount)}</b></td></tr>`; }).join("")}</table></div>`;
+    ${rows.map((r) => { const i = inv(r.investor); const nm = r.investor === "spv" ? "SPV (unsold)" : r.investor === "others" ? "Other investors" : i.short; return `<tr><td><span class="who"><i style="${r.investor === "spv" ? `background:${SPV_FILL};box-shadow:inset 0 0 0 1.5px ${SPV_EDGE}` : `background:${i.color}`}"></i>${esc(nm)}${r.investor === S.me ? '<span class="you">YOU</span>' : ""}</span></td><td class="r num">${num(r.units)}</td><td class="r num">${fmtPct((r.units * 100) / a.total_units)}</td><td class="r num"><b>${inr(r.amount)}</b></td></tr>`; }).join("")}</table></div>`;
 }
 
 function ownership(a) {
   const cells = allocate(a.holders);
   const legendName = (h) => (h.kind === "person" ? `<b>${esc(h.short)}</b>` : h.kind === "system" ? "Unsold (held by SPV)" : esc(h.name));
-  const sw = (h) => (h.kind === "system" ? `background:${SPV_FILL};box-shadow:inset 0 0 0 1px #CDBBFF` : `background:${h.color}`);
+  const sw = (h) => (h.kind === "system" ? `background:${SPV_FILL};box-shadow:inset 0 0 0 1.5px ${SPV_EDGE}` : `background:${h.color}`);
   return `<h3>${ic("grid")}Who owns this asset?</h3><p class="sub">Each square = 1% of the asset = ${num(a.total_units / 100)} fractions</p>
     <div class="own"><div class="cells">${cells.map((h) => `<i class="cell ${S.flash.has(h.id) ? "pop" : ""}" style="${sw(h)}" title="${esc(h.kind === "system" ? "Unsold" : h.name)}"></i>`).join("")}</div>
     <div class="legend">${holderOrder(a.holders).map((h) => `<div class="lg"><i style="${sw(h)}"></i><span>${legendName(h)}${h.id === S.me ? '<span class="you">YOU</span>' : ""}</span><small class="num">${num(h.units)} · ${fmtPct(h.pct)}</small></div>`).join("")}
@@ -324,11 +348,11 @@ function chart(a) {
   const step = Math.ceil(pts.length / 6);
   const change = ((ys[ys.length - 1] - ys[0]) * 100) / ys[0];
   return `<h3>${ic("trend")}Value per fraction</h3><p class="sub">${change >= 0 ? "+" : ""}${change.toFixed(1)}% since ${lbl(pts[0].t)} · moves when the asset is revalued</p>
-    <svg viewBox="0 0 ${W} ${H}"><defs><linearGradient id="cg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6C22F2" stop-opacity=".28"/><stop offset="1" stop-color="#6C22F2" stop-opacity="0"/></linearGradient></defs>
-    ${ticks.map((t) => `<line x1="${L}" x2="${W - R}" y1="${y(t).toFixed(1)}" y2="${y(t).toFixed(1)}" stroke="#ECE8F6"/><text x="${L - 10}" y="${(y(t) + 4).toFixed(1)}" text-anchor="end" font-size="11" fill="#8C88A6">${inr(Math.round(t / 1000) * 1000)}</text>`).join("")}
-    <path d="${area}" fill="url(#cg)"/><path d="${line}" fill="none" stroke="#6C22F2" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
-    ${pts.map((p, i) => `<circle cx="${x(i).toFixed(1)}" cy="${y(p.price).toFixed(1)}" r="${i === pts.length - 1 ? 6 : 4}" fill="#fff" stroke="#6C22F2" stroke-width="3"/>`).join("")}
-    ${pts.map((p, i) => (i % step === 0 || i === pts.length - 1 ? `<text x="${x(i).toFixed(1)}" y="${H - 8}" text-anchor="middle" font-size="11" fill="#8C88A6">${lbl(p.t)}</text>` : "")).join("")}
+    <svg viewBox="0 0 ${W} ${H}"><defs><linearGradient id="cg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#D4AE57" stop-opacity=".45"/><stop offset="1" stop-color="#D4AE57" stop-opacity="0"/></linearGradient></defs>
+    ${ticks.map((t) => `<line x1="${L}" x2="${W - R}" y1="${y(t).toFixed(1)}" y2="${y(t).toFixed(1)}" stroke="#E9E1CD"/><text x="${L - 10}" y="${(y(t) + 4).toFixed(1)}" text-anchor="end" font-size="11" fill="#7C8498">${inr(Math.round(t / 1000) * 1000)}</text>`).join("")}
+    <path d="${area}" fill="url(#cg)"/><path d="${line}" fill="none" stroke="#0B1F47" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+    ${pts.map((p, i) => `<circle cx="${x(i).toFixed(1)}" cy="${y(p.price).toFixed(1)}" r="${i === pts.length - 1 ? 6 : 4}" fill="#fff" stroke="#B8892B" stroke-width="3"/>`).join("")}
+    ${pts.map((p, i) => (i % step === 0 || i === pts.length - 1 ? `<text x="${x(i).toFixed(1)}" y="${H - 8}" text-anchor="middle" font-size="11" fill="#7C8498">${lbl(p.t)}</text>` : "")).join("")}
     </svg>`;
 }
 
@@ -402,15 +426,15 @@ function viewPortfolio() {
       </div></div>
     <div class="holdings">${rows.length ? rows.join("") : `<div class="card empty">${esc(m.short)} doesn't own any fractions yet.<br><br><button class="btn btn-p" data-action="nav" data-view="market">Go to the marketplace ${ic("arrow")}</button></div>`}</div>
     <div class="board card"><h3>${ic("users")}Group leaderboard</h3><p class="sub">Net worth = wallet cash + current value of fractions</p>
-      ${list.map((i) => `<div class="brow"><div class="who">${avatar(i, "sm")}<b style="color:var(--ink)">${esc(i.name)}</b></div><div class="bar"><i style="width:${(i.net_worth * 100) / max}%;background:${i.color}"></i></div><div class="num" style="text-align:right;font-weight:600;color:var(--ink)">${inr(i.net_worth)}</div></div>`).join("")}
+      ${list.map((i) => `<div class="brow"><div class="who">${avatar(i, "sm")}<b style="color:var(--ink)">${esc(i.name)}</b>${i.id === S.me ? '<span class="you">YOU</span>' : ""}</div><div class="bar"><i style="width:${(i.net_worth * 100) / max}%;background:${i.color}"></i></div><div class="num" style="text-align:right;font-weight:800;color:var(--ink)">${inr(i.net_worth)}</div></div>`).join("")}
     </div>
   </div></section>`;
 }
 
 const BLOCK_STYLE = {
-  GENESIS: ["#1C1543", "#fff", "GENESIS"], TOKENIZE: ["#EEE7FF", "#5915D8", "TOKENIZE"], PRIMARY_BUY: ["#E7F8F1", "#0E8A60", "BUY"],
-  SECONDARY_TRADE: ["#FFF3DC", "#A86A00", "TRADE"], LISTING: ["#F2F0F7", "#4D4968", "LISTING"], CANCEL: ["#F2F0F7", "#4D4968", "CANCEL"],
-  INCOME: ["#6C22F2", "#fff", "PAYOUT"], REVALUE: ["#E6E3F1", "#1C1543", "REVALUE"],
+  GENESIS: ["#0B1F47", "#D4AE57", "GENESIS"], TOKENIZE: ["#F3E7C8", "#7A5A12", "TOKENIZE"], PRIMARY_BUY: ["#E4F5EC", "#0F7A54", "BUY"],
+  SECONDARY_TRADE: ["#5B6B8F", "#fff", "TRADE"], LISTING: ["#EFECE3", "#3B4763", "LISTING"], CANCEL: ["#EFECE3", "#3B4763", "CANCEL"],
+  INCOME: ["#D4AE57", "#0B1F47", "PAYOUT"], REVALUE: ["#0B1F47", "#fff", "REVALUE"],
 };
 
 function blockRow(b) {
@@ -432,8 +456,8 @@ function viewLedger() {
   else if (v) { cls = "bad"; icon = ic("alert"); title = `Tampering detected at record #${v.broken_at}`; sub = v.reason; }
   else if (tampered) { title = "A record was quietly edited"; sub = "Nothing looks different yet. Click Verify chain to catch it."; }
   return `<section class="section"><div class="wrap">
-    <div class="navy" style="margin-top:0"><div class="ledger-head"><div style="position:relative;z-index:1"><span class="eyebrow" style="color:#CDBBFF">Trust layer</span>
-      <h2 style="font-size:34px;margin-top:10px">Tamper-evident ledger</h2>
+    <div class="navy" style="margin-top:0"><div class="ledger-head"><div style="position:relative;z-index:1"><span class="eyebrow on-navy">Trust layer</span>
+      <h2>Tamper-evident ledger</h2>
       <p>Every buy, sale, payout and revaluation becomes a record. Each record stores the SHA-256 hash of the one before it, so editing any old record breaks the chain. Tokenized assets use the same idea on a blockchain.</p></div>
       <div class="ledger-actions"><button class="btn btn-w" data-action="verify">${ic("shield")}Verify chain</button>
       ${tampered ? `<button class="btn btn-ghost-w" data-action="restore">${ic("refresh")}Restore record</button>` : `<button class="btn btn-ghost-w" data-action="tamper">${ic("alert")}Tamper with a record</button>`}</div></div>
@@ -467,11 +491,11 @@ function viewLearn() {
     ["scale", "SM REIT", "SEBI's 2024 framework that brings India's fractional-ownership platforms under regulation."],
   ];
   const c = S.calc;
-  return `<section class="section soft"><div class="wrap">
+  return `<section class="section"><div class="wrap">
     <div class="sec-head"><h2>How fractional ownership works</h2><p>Five steps take one expensive asset and turn it into many small, affordable pieces.</p><span class="pill-tag">The model behind this demo</span></div>
     <div class="steps">${steps.map(([h, p], i) => `<div class="step"><div class="n">0${i + 1}</div><h4>${h}</h4><p>${p}</p></div>`).join("")}</div>
   </div></section>
-  <section class="section"><div class="wrap">
+  <section class="section soft"><div class="wrap">
     <div class="sec-head"><h2>Whole vs fractional</h2><p>Move the sliders to see how fractions lower the entry ticket.</p></div>
     <div class="calc"><div class="card">
       <label class="field-lbl" for="calcValue">Asset value</label><input class="range" id="calcValue" type="range" min="10" max="1000" step="10" value="${c.value}">
@@ -483,9 +507,9 @@ function viewLearn() {
     </div>
     <div class="card"><h3>${ic("scale")}What your budget gets you</h3><p class="sub">Assumes 7.2% yearly rent, like the Goa villa</p><div class="vs" id="calcOut">${calcOut()}</div></div></div>
   </div></section>
-  <section class="section soft"><div class="wrap">
+  <section class="section dark"><div class="wrap">
     <div class="sec-head"><h2>Key terms</h2></div>
-    <div class="gloss">${gloss.map(([i, h, p], k) => `<div class="gl ${k === 5 ? "hl" : ""}"><div class="gi">${ic(i)}</div><h4>${h}</h4><p>${p}</p></div>`).join("")}</div>
+    <div class="gloss">${gloss.map(([i, h, p]) => `<div class="gl"><div class="gi">${ic(i)}</div><h4>${h}</h4><p>${p}</p></div>`).join("")}</div>
   </div></section>
   <section class="section"><div class="wrap">
     <div class="sec-head"><h2>Fractional ownership in India today</h2><p>This demo uses ₹10,000 fractions to keep the maths simple. Regulated Indian products start higher.</p></div>
@@ -500,7 +524,7 @@ function viewLearn() {
 }
 
 function footer() {
-  return `<div class="foot">Fractify · a simulation for education, not a real investment platform · Introduction of Financial Technology (316Z04C301), K J Somaiya School of Engineering</div>`;
+  return `<div class="foot"><b>Fractify</b> a simulation for education, not a real investment platform · Introduction of Financial Technology (316Z04C301), K J Somaiya School of Engineering</div>`;
 }
 
 function render() {
@@ -599,6 +623,9 @@ document.addEventListener("keydown", (e) => {
 (async function init() {
   try {
     S.data = await api("/api/state");
+    const start = decodeURIComponent(location.hash.slice(1));
+    if (["market", "portfolio", "ledger", "learn"].includes(start)) S.view = start;
+    else if (assetById(start)) S.asset = start;
     render();
   } catch (e) {
     $("main").innerHTML = `<div class="wrap section"><div class="card empty"><b>Can't reach the Fractify server.</b><br>Start it with <code>python server.py</code> (or double-click run.bat) and open the address it prints.</div></div>`;
