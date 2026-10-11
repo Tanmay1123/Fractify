@@ -1,0 +1,7 @@
+data/
+__pycache__/
+*.pyc
+test_engine.py
+run.bat
+run.sh
+.claude/

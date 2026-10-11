@@ -45,12 +45,12 @@ def block_hash(block):
 
 
 class Platform:
-    def __init__(self, path=None):
+    def __init__(self, path=None, state=None):
         self.path = Path(path) if path else None
         self.lock = threading.RLock()
         self._clock = None
-        self.s = None
-        if self.path and self.path.exists():
+        self.s = state
+        if self.s is None and self.path and self.path.exists():
             try:
                 self.s = json.loads(self.path.read_text(encoding="utf-8"))
             except (ValueError, OSError):

@@ -3,7 +3,7 @@
 Working model of fractional ownership for a college FinTech presentation. Keep it runnable with zero installs.
 
 ## Run / test
-- `python server.py` (flags: `--port 8000`, `--no-browser`, `--reset`)
+- `python server.py` (flags: `--port 8000`, `--no-browser`, `--reset`, `--stateless`)
 - `python test_engine.py` — run after any change to `engine.py` or `seed.py`
 
 ## Architecture
@@ -14,6 +14,9 @@ Working model of fractional ownership for a college FinTech presentation. Keep i
   - `view()` builds everything the frontend needs (assets with holders/orders, investors with portfolio totals, stats).
 - `seed.py` — `build_seed()` creates investors, assets and backdated history through the normal engine methods.
 - `server.py` — stdlib `ThreadingHTTPServer`; `ACTIONS` maps POST routes to engine calls; every POST response is `{"result", "state"}`.
+  - Stateless mode (`platform is None`: Vercel via `api/index.py` + `vercel.json`, or `--stateless`): nothing is stored
+    on the server. Responses carry the raw state as `save`; `app.js` keeps it in localStorage and sends it back as
+    `state` with every call. Anything that must work online has to go through this path - no server-side files or globals.
 - `static/app.js` — vanilla JS, no build step. One global `S` state object; `render()` redraws the current view and the
   asset modal from `S.data`. Click handling is delegated via `data-action` attributes. Inline SVG icons in `ICONS`.
 

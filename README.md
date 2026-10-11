@@ -23,6 +23,15 @@ Stop with `Ctrl+C`. Needs Python 3.8 or newer.
 
 Start fresh before presenting: `python server.py --reset` (or click the ↻ button in the top-right of the app).
 
+## Put it online (Vercel)
+
+The repo is ready to deploy as-is: import it at vercel.com/new (or run `npx vercel` in this folder) and keep the
+default settings. `vercel.json` serves `static/` as the site and sends `/api/*` to `api/index.py`.
+
+Vercel cannot keep a file between requests, so online the demo data lives in **each visitor's browser**
+(localStorage) instead of `data/state.json`. Everyone who opens the link gets their own copy starting from the
+seed data; the ↻ button resets it. To rehearse that mode offline: `python server.py --stateless`.
+
 ## 75-second demo path
 
 1. **Marketplace** → open **Sea-View Holiday Villa**. Point at the 10×10 grid: each square is 1% of the villa.
@@ -39,6 +48,7 @@ Start fresh before presenting: `python server.py --reset` (or click the ↻ butt
 | `engine.py` | The model: assets, fractions, wallets, primary buys, secondary market, pro-rata income, revaluation, SHA-256 hash-chained ledger |
 | `seed.py` | Starting data: the 4 group members (₹10,00,000 wallet each), 4 assets, past purchases and payouts |
 | `server.py` | Tiny HTTP server: serves the UI and a JSON API (`/api/state`, `/api/buy`, `/api/list`, `/api/fill`, `/api/cancel`, `/api/distribute`, `/api/revalue`, `/api/verify`, `/api/tamper`, `/api/restore`, `/api/reset`) |
+| `api/index.py`, `vercel.json` | Vercel deployment: runs the same server code without a state file |
 | `static/` | The web interface (`index.html`, `styles.css`, `app.js`, bundled Poppins font) |
 | `test_engine.py` | Unit tests: `python test_engine.py` |
 | `data/state.json` | Created at runtime; delete it (or use `--reset`) to start over |

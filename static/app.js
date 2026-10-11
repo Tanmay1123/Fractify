@@ -59,11 +59,22 @@ const avatar = (i, cls = "") => `<span class="av ${cls}" style="background:${i.c
 const fmtTime = (ts) => new Date(ts).toLocaleString("en-IN", { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" });
 const unitsOf = (a, id) => (a.holders.find((h) => h.id === id) || { units: 0 }).units;
 
+// Hosted (Vercel) mode: the server keeps nothing between requests. It returns the raw state as `save`; we keep it
+// in this browser and send it back as `state` with every call. The local server never sends `save`.
+const SAVE_KEY = "fractify-save";
+let SAVE = null;
+try { SAVE = JSON.parse(localStorage.getItem(SAVE_KEY)); } catch (e) { SAVE = null; }
+
 async function api(path, body) {
+  if (SAVE) body = { ...body, state: SAVE };
   const opt = body === undefined ? {} : { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) };
   const res = await fetch(path, opt);
   const json = await res.json();
   if (!res.ok) throw new Error(json.error || "Something went wrong");
+  if (json.save) {
+    SAVE = json.save;
+    try { localStorage.setItem(SAVE_KEY, JSON.stringify(SAVE)); } catch (e) { /* private mode: keep it in memory */ }
+  }
   return json;
 }
 
